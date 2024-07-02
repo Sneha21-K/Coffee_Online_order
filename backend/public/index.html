@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css">
+
+   <link rel="stylesheet" href="css/style.css">
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+   
+
+
+<header class="header fixed-top">
+
+   <div class="container">
+
+      <div class="row align-items-center">
+
+         <a href="#" class="logo mr-auto"> <i class="fas fa-mug-hot"></i> <strong>COFFEE DAY</strong> </a>
+
+         <nav class="nav">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+             <a href="#gallery">Menu</a>
+            <a href="#contact">Contact</a>
+           
+         </nav>
+
+         <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="login-btn" class="fas fa-user"></div>
+         </div>
+
+      </div>
+
+   </div>
+
+</header>
+
+<!-- login form starts -->
+
+<div class="login-form">
+    <form id="orderForm">
+   <form action="submit">
+      <div id="close-login-form" class="fas fa-times"></div>
+      <a href="#" class="logo mr-auto"> <i class="fas fa-mug-hot"></i> <strong>COFFEE DAY</strong> </a>
+      <h3>Order here</h3>
+      <div class="A">
+        <input type="text" name="name" placeholder="Enter your name" id="name" class="box" required>
+        <input type="email" name="email" placeholder="Enter your email" id="email" class="box" required>
+        <input type="text" name="number" placeholder="Enter your number" id="number" class="box" required>
+        <input type="text" name="address" placeholder="Enter your address" id="address" class="box" required>
+        <select name="menu" id="menu" class="box" required>
+            <option value="">Menu</option> 
+            <option value="rigatoni-cappucino">Cappuccino</option> 
+            <option value="dave-latte">Latte</option> 
+            <option value="pumpernickel-lemon tea">Lemon tea</option> 
+            <option value="reeses-flat white">Flat white</option> 
+            <option value="reeses-black coffee">Black Coffee</option> 
+            <option value="reeses-expresso">Expresso</option> 
+         </select>
+      </div>
+      <input type="submit" value="Order now" class="link-btn">
+   </form>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+       let loginForm = document.querySelector('.login-form');
+ 
+       document.querySelector('#login-btn').onclick = () => {
+          loginForm.classList.add('active');
+       }
+ 
+       document.querySelector('#close-login-form').onclick = () => {
+          loginForm.classList.remove('active');
+       }
+ 
+       let menu = document.querySelector('#menu-btn');
+       let navbar = document.querySelector('.header .nav');
+ 
+       menu.onclick = () => {
+          menu.classList.toggle('fa-times');
+          navbar.classList.toggle('active');
+       }
+ 
+       window.onscroll = () => {
+          loginForm.classList.remove('active');
+          menu.classList.remove('fa-times');
+          navbar.classList.remove('active');
+ 
+          if (window.scrollY > 0) {
+             document.querySelector('.header').classList.add('active');
+          } else {
+             document.querySelector('.header').classList.remove('active');
+          }
+       }
+ 
+       document.getElementById('orderForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const orderData = {};
+          formData.forEach((value, key) => {
+             orderData[key] = value;
+          });
+ 
+          try {
+             const response = await fetch('http://localhost:5000/orders/add', {
+                method: 'POST',
+                headers: {
+                   'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+             });
+             const data = await response.json();
+             
+             if (response.ok) {
+                loginForm.classList.remove('active');
+                Swal.fire({
+                   title: 'Order placed successfully!',
+                   text: 'Your order has been received.',
+                   icon: 'success',
+                   confirmButtonText: 'OK',
+                   confirmButtonColor:'green'
+                }).then(() => {
+                   window.location.href = '#home';
+                   e.target.reset();
+                });
+             } else {
+                Swal.fire({
+                   title: 'Error!',
+                   text: data.message || 'An error occurred while placing your order. Please try again.',
+                   icon: 'error',
+                   confirmButtonText: 'OK',
+                   confirmButtonColor:'red'
+                });
+             }
+          } catch (error) {
+             console.error('Error:', error);
+             Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred while placing your order. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor:'red'
+             });
+          }
+       });
+    });
+ </script>
+  
+
+<!-- login form ends -->
+
+<!-- header section ends    -->
+
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+   <div class="container">
+
+      <div class="row align-items-center text-center text-md-left min-vh-100">
+         <div class="col-md-6">
+            <span><strong>Coffee House</strong></span>
+            <h3><strong>Start your day with our coffee</strong></h3>
+            
+         </div>
+      </div>
+
+   </div>
+
+</section>
+
+<!-- home section ends -->
+
+<!-- about section starts  -->
+
+<section class="about" id="about">
+
+   <div class="container">
+
+      <div class="row align-items-center">
+         <div class="col-md-6">
+            <img src="images/about-img-1.png" class="w-100" alt="">
+         </div>
+         <div class="col-md-6">
+            <span>why choose us?</span>
+            
+            <p>Coffee Day offers a unique coffee house environment unlike any other in Pune. We are not only a place to drop in and get your morning coffee , we are a place where you can sit down and enjoy cup of coffee. If you need to work, we have a seating area created specifically for you.
+               All of our sauces & syrups are homemade with all natural ingredients ensuring you the highest quality in taste & health.  You can complete your coffee with one of our delicious sweet treats made by our very own baker. We look forward to serving you at Viman Nagar</p>
+           
+            <div class="icons-container">
+               <div class="icons">
+                  <i class="fas fa-coffee"></i>
+                  <h3>best coffee</h3>
+               </div>
+               <div class="icons">
+                  <i class="fas fa-shipping-fast"></i>
+                  <h3>free delivery</h3>
+               </div>
+               <div class="icons">
+                  <i class="fas fa-headset"></i>
+                  <h3>24/7 service</h3>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+
+</section>
+
+<!-- about section ends -->
+
+
+
+<!-- gallery section starts  -->
+
+<section class="gallery" id="gallery">
+
+   <h1 class="heading"> our Menu</h1>
+
+   <div class="box-container container">
+
+      <div class="box">
+         <img src="images/g-img-1.jpg" alt="">
+         <div class="content">
+            <h3><strong>Cappuccino coffee</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+      <div class="box">
+         <img src="images/g-img-2.jpg" alt="">
+         <div class="content">
+            <h3><strong>Latte coffee</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+      <div class="box">
+         <img src="images/g-img-3.jpg" alt="">
+         <div class="content">
+            <h3><strong>lemon tea</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+      <div class="box">
+         <img src="images/g-img-4.jpg" alt="">
+         <div class="content">
+            <h3><strong>Flat white coffee</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+      <div class="box">
+         <img src="images/g-img-5.jpg" alt="">
+         <div class="content">
+            <h3><strong>Black coffee</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+      <div class="box">
+         <img src="images/g-img-6.jpg" alt="">
+         <div class="content">
+            <h3><strong>Espresso coffee</strong></h3>
+            
+            <a href="#orderForm" class="link-btn"><strong>Order now</strong></a>
+         </div>
+      </div>
+
+   </div>
+
+</section>
+
+<!-- gallery section ends -->
+
+
+<!-- contact section starts  -->
+
+<section class="contact" id="contact">
+
+   <h1 class="heading"> Our Location  </h1>
+
+   <div class="container">
+
+      <div class="contact-info-container">
+         <div class="content">
+            <img src="./images/istockphoto-1400648198-170667a.jpg" alt="coffee shop 1" height="345" width="345">
+     
+               <h1><strong><center>Mumbai</center></strong></h1>
+               
+               <center><a href="#" class="link-btn"><strong> Visit now</strong></a></center>
+            </div> 
+            <div class="content">
+               <img src="./images/istockphoto-1428594094-170667a.jpg" alt="coffee shop 2" height="345" width="345">
+            
+                  <h1><strong><center>Pune</center></strong></h1>
+                  
+                  <center><a href=# class="link-btn"><strong> Visit now</strong></a></center>
+               </div> 
+               
+         
+
+         <div class="content">
+         <img src="./images/istockphoto-1395507586-170667a.jpg" alt="coffee shop 3" height="345" width="345">
+            
+            <h1><strong><center>Delhi</center></strong></h1>
+            
+            <center><a href="#" class="link-btn"><strong> Visit now</strong></a></center>
+         </div>   
+      </div>
+
+
+   </div>
+
+</section>
+<hr style="background-color:rgb(155, 148, 148)">
+<section class="contact" id="contact">
+
+   <h1 class="heading"> contact us  </h1>
+
+   <div class="container">
+
+      <div class="contact-info-container">
+
+         <div class="box">
+            <i class="fas fa-phone"></i>
+            <h3>phone</h3>
+            <p>+91-8483039989</p>
+           
+
+         </div>
+   
+         <div class="box">
+            <i class="fas fa-envelope"></i>
+            <h3>email</h3>
+            <p>snehakamthekar2227@gmail.com</p>
+            
+            
+         </div>
+   
+         <div class="box">
+            <i class="fas fa-map"></i>
+            <h3>address</h3>
+            <p>Pune, India</p>
+            
+         </div>
+   
+      </div>
+
+
+   </div>
+
+</section>
+
+<!-- contact section ends -->
+
+
+<!-- newsletter section starts  -->
+
+
+
+<!-- newsletter section ends -->
+
+<!-- footer section starts  -->
+
+<section class="footer container">
+
+   <a href="#" class="logo"> <i class="fas fa-mug-hot"></i> coffee </a>
+
+  
+
+   <div class="share">
+      <a href="#" class="fab fa-facebook-f"></a>
+      <a href="#" class="fab fa-linkedin"></a>
+      <a href="#" class="fab fa-instagram"></a>
+      
+   </div>
+   
+</section>
+
+<!-- footer section ends -->
+
+
+
+
+
+
+
+
+
+<!-- custom js file link  -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
